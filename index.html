@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>عائلة الصباغ 🌳</title>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
+  
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Tajawal', sans-serif;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
+
+    body {
+      background: #0f172a;
+      background-image: radial-gradient(circle at top, #1e293b 0%, #0f172a 100%);
+      color: #f8fafc;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 30px 15px;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .header h1 {
+      font-size: 38px;
+      font-weight: 900;
+      color: #fbbf24;
+      text-shadow: 0 4px 15px rgba(251, 191, 36, 0.2);
+      letter-spacing: 1px;
+    }
+    .header p {
+      color: #94a3b8;
+      font-size: 16px;
+      margin-top: 5px;
+    }
+
+    .uncles-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      width: 100%;
+      max-width: 950px;
+    }
+
+    .uncle-card {
+      background: rgba(30, 41, 59, 0.7);
+      border: 1px solid rgba(251, 191, 36, 0.2);
+      border-radius: 20px;
+      padding: 20px;
+      text-align: center;
+      cursor: pointer;
+      backdrop-filter: blur(10px);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .uncle-card:hover {
+      transform: translateY(-8px);
+      border-color: #fbbf24;
+      background: rgba(47, 63, 86, 0.8);
+      box-shadow: 0 15px 35px rgba(251, 191, 36, 0.25);
+    }
+
+    .uncle-img-wrap {
+      width: 110px;
+      height: 110px;
+      margin: 0 auto 15px auto;
+      border-radius: 50%;
+      border: 3px solid #fbbf24;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+    }
+
+    .uncle-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .uncle-name {
+      font-size: 20px;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 5px;
+    }
+
+    .uncle-tag {
+      font-size: 13px;
+      color: #fbbf24;
+      background: rgba(251, 191, 36, 0.1);
+      padding: 4px 12px;
+      border-radius: 20px;
+      display: inline-block;
+      font-weight: 700;
+    }
+
+    .click-hint {
+      margin-top: 15px;
+      font-size: 12px;
+      color: #cbd5e1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+    }
+
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(8px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      padding: 20px;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-box {
+      background: #1e293b;
+      border: 1px solid rgba(251, 191, 36, 0.4);
+      border-radius: 24px;
+      width: 100%;
+      max-width: 750px;
+      max-height: 85vh;
+      overflow-y: auto;
+      padding: 30px;
+      position: relative;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.6);
+      transform: scale(0.9);
+      transition: transform 0.3s ease;
+    }
+
+    .modal-overlay.active .modal-box {
+      transform: scale(1);
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      width: 35px;
+      height: 35px;
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      border-radius: 50%;
+      color: #fff;
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+    .close-btn:hover {
+      background: #ef4444;
+      color: #fff;
+    }
+
+    .modal-header-info {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: 20px;
+      margin-bottom: 25px;
+    }
+
+    .modal-uncle-img {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #fbbf24;
+      flex-shrink: 0;
+    }
+
+    .modal-uncle-title {
+      font-size: 24px;
+      font-weight: 900;
+      color: #fbbf24;
+    }
+
+    .modal-uncle-sub {
+      color: #94a3b8;
+      font-size: 14px;
+      margin-top: 3px;
+    }
+
+    .children-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .children-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 15px;
+    }
+
+    .child-card {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 15px;
+      text-align: center;
+      transition: all 0.2s ease;
+    }
+
+    .child-card:hover {
+      border-color: #fbbf24;
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    .child-img {
+      width: 75px;
+      height: 75px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin: 0 auto 10px auto;
+      border: 2px solid #fbbf24;
+    }
+
+    .child-name {
+      font-size: 16px;
+      font-weight: 700;
+      color: #f8fafc;
+    }
+
+    @media (max-width: 550px) {
+      .modal-header-info {
+        flex-direction: column;
+        text-align: center;
+      }
+      .children-grid {
+        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>شجرة عائلة الصباغ 🌳</h1>
+    <p>اضغط على اسم العم لعرض تفاصيل عائلته وأبنائه</p>
+  </div>
+
+  <div class="uncles-grid" id="unclesGrid"></div>
+
+  <div class="modal-overlay" id="familyModal" onclick="if(event.target===this) closeModal()">
+    <div class="modal-box">
+      <button class="close-btn" onclick="closeModal()">✕</button>
+      
+      <div class="modal-header-info">
+        <img src="" id="mUncleImg" class="modal-uncle-img" alt="صورة العم">
+        <div>
+          <h2 id="mUncleName" class="modal-uncle-title"></h2>
+          <p id="mUncleSub" class="modal-uncle-sub"></p>
+        </div>
+      </div>
+
+      <div class="children-title">
+        <span>👨‍👩‍👧‍👦</span>
+        <span>الأبناء والبنات:</span>
+      </div>
+      <div class="children-grid" id="mChildrenGrid"></div>
+    </div>
+  </div>
+
+  <script>
+    const familyData = {
+      abdelfattah: {
+        name: "عبد الفتاح الصباغ",
+        role: "العم عبد الفتاح",
+        image: "abdelfattah.jpeg",
+        children: [
+          { name: "صفاء", image: "safaa.jpeg" },
+          { name: "سيف", image: "seif.jpeg" },
+          { name: "آية", image: "aya.jpeg" },
+          { name: "ريان", image: "rayan.jpeg" },
+          { name: "أروى", image: "arwa.jpeg" }
+        ]
+      },
+      hassan: {
+        name: "حسن الصباغ",
+        role: "العم حسن",
+        image: "hassan.jpeg",
+        children: []
+      },
+      abdelhadi: {
+        name: "عبد الهادي الصباغ",
+        role: "العم عبد الهادي",
+        image: "abdelhadi.jpeg",
+        children: []
+      },
+      ismail: {
+        name: "إسماعيل الصباغ",
+        role: "العم إسماعيل",
+        image: "ismail.jpeg",
+        children: []
+      }
+    };
+
+    function renderUncles() {
+      const container = document.getElementById('unclesGrid');
+      container.innerHTML = '';
+
+      for (let key in familyData) {
+        const uncle = familyData[key];
+        const childrenCount = uncle.children.length;
+
+        container.innerHTML += `
+          <div class="uncle-card" onclick="openModal('${key}')">
+            <div class="uncle-img-wrap">
+              <img src="${uncle.image}" class="uncle-img" alt="${uncle.name}" onerror="this.src='https://via.placeholder.com/150/1e293b/fbbf24?text=الصباغ'">
+            </div>
+            <div class="uncle-name">${uncle.name}</div>
+            <div class="uncle-tag">${childrenCount} من الأبناء</div>
+            <div class="click-hint">
+              <span>عرض العائلة</span>
+              <span>←</span>
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    function openModal(uncleKey) {
+      const uncle = familyData[uncleKey];
+      if (!uncle) return;
+
+      document.getElementById('mUncleName').innerText = uncle.name;
+      document.getElementById('mUncleSub').innerText = `${uncle.role} وأبناؤه الكرام`;
+      
+      const uncleImg = document.getElementById('mUncleImg');
+      uncleImg.src = uncle.image;
+      uncleImg.onerror = function() { this.src = 'https://via.placeholder.com/150/1e293b/fbbf24?text=الصباغ'; };
+
+      const childrenGrid = document.getElementById('mChildrenGrid');
+      childrenGrid.innerHTML = '';
+
+      if (uncle.children.length === 0) {
+        childrenGrid.innerHTML = '<p style="color: #94a3b8; grid-column: 1/-1;">لم يتم إضافة الأبناء بعد.</p>';
+      } else {
+        uncle.children.forEach(child => {
+          childrenGrid.innerHTML += `
+            <div class="child-card">
+              <img src="${child.image}" class="child-img" alt="${child.name}" onerror="this.src='https://via.placeholder.com/100/334155/ffffff?text=صورة'">
+              <div class="child-name">${child.name}</div>
+            </div>
+          `;
+        });
+      }
+
+      document.getElementById('familyModal').classList.add('active');
+    }
+
+    function closeModal() {
+      document.getElementById('familyModal').classList.remove('active');
+    }
+
+    renderUncles();
+  </script>
+</body>
+</html>
